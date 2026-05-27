@@ -442,6 +442,7 @@ async function handleSubmit(e) {
   body.append('entry.1957845796', name);
   body.append('entry.273151231',  phone);
   body.append('entry.484734744',  email);
+  body.append('entry.1843572681', document.getElementById('apt-select').value);
 
   try {
     await fetch(
