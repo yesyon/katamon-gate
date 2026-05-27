@@ -366,9 +366,10 @@ h1 em{font-style:italic;color:var(--gold2)}
 
       <!-- FORM -->
       <div class="form-block" id="the-form">
-        <input type="text" placeholder="Full name *" required autocomplete="name">
-        <input type="tel" placeholder="Phone / WhatsApp *" required autocomplete="tel" inputmode="tel">
-        <input type="email" placeholder="Email (optional)" autocomplete="email" inputmode="email">
+        <form id="kgForm" onsubmit="handleSubmit(event)">
+        <input type="text" id="f-name" placeholder="Full name *" required autocomplete="name">
+        <input type="tel" id="f-phone" placeholder="Phone / WhatsApp *" required autocomplete="tel" inputmode="tel">
+        <input type="email" id="f-email" placeholder="Email (optional)" autocomplete="email" inputmode="email">
         <select id="apt-select" onchange="this.classList.add('has-value')">
           <option value="">Apartment size (optional)</option>
           <option>3 rooms</option>
@@ -376,8 +377,9 @@ h1 em{font-style:italic;color:var(--gold2)}
           <option>6 rooms</option>
           <option>Penthouse</option>
         </select>
-        <button class="submit" id="submitBtn" onclick="handleSubmit(event)">Leave Details — We'll Call You →</button>
+        <button class="submit" id="submitBtn" type="submit">Leave Details — We'll Call You →</button>
         <p class="form-note">Your details are kept private and used only to contact you about this project</p>
+        </form>
       </div>
 
       <div class="or-div"><div class="or-line"></div><div class="or-text">or contact directly</div><div class="or-line"></div></div>
@@ -427,13 +429,39 @@ h1 em{font-style:italic;color:var(--gold2)}
 </div>
 
 <script>
-function handleSubmit(e){
+const FORM_ID = '1FAIpQLSeKU6gXcyEHf0HuP5-H6c9-J3FjB-kZnyWgRWB_x-mgHK_brg';
+
+async function handleSubmit(e) {
   e.preventDefault();
-  const btn = document.getElementById('submitBtn');
-  btn.textContent = '✓  We\'ll be in touch shortly';
+  const btn   = document.getElementById('submitBtn');
+  const name  = document.getElementById('f-name').value;
+  const phone = document.getElementById('f-phone').value;
+  const email = document.getElementById('f-email').value;
+
+  const body = new FormData();
+  body.append('entry.1957845796', name);
+  body.append('entry.273151231',  phone);
+  body.append('entry.484734744',  email);
+
+  try {
+    await fetch(
+      'https://docs.google.com/forms/d/e/' + FORM_ID + '/formResponse',
+      { method: 'POST', body: body, mode: 'no-cors' }
+    );
+  } catch(_) {}
+
+  btn.textContent = "\u2713  We'll be in touch shortly";
   btn.classList.add('sent');
   btn.disabled = true;
 }
+
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    var t = document.querySelector(a.getAttribute('href'));
+    if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
 </script>
 </body>
 </html>
