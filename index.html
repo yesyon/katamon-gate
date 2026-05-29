@@ -453,7 +453,9 @@ function trackWhatsApp() {
 
   fetch(SCRIPT_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' })
     .finally(function() {
-      window.location.href = 'https://wa.me/972545950600?text=Hi%2C+I%27m+interested+in+Katamon+Gate+Jerusalem';
+      window.open('https://wa.me/972545950600?text=Hi%2C+I%27m+interested+in+Katamon+Gate+Jerusalem', '_blank');
+      btn.textContent = 'WhatsApp Us Now';
+      btn.disabled = false;
     });
 }
 
